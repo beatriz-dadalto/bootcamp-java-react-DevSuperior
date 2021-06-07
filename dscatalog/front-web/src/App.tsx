@@ -1,9 +1,12 @@
+import './core/assets/styles/custom.scss';
+import './app.scss';
+import Navbar from './core/components/Navbar';
 
 const App = () => {
   return (
-    <div>
-      <h1>Hello Bia</h1>      
-    </div>
+    <>
+      <Navbar />
+    </>
   )
 }
 
