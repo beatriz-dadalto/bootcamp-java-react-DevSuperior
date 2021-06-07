@@ -16,17 +16,9 @@ ul {
 }
 
 a {
-  text-decoration: none;
   &:hover {
+    text-decoration: none;
     color: unset;
-  }
-}
-
-.btn {
-  color: #FFF;
-
-  &:hover {
-    color: #FFF;
   }
 }
 
