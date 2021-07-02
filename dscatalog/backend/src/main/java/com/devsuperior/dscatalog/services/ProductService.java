@@ -28,15 +28,16 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository repository;
-	
+
 	@Autowired
 	private CategoryRepository categoryRepository;
 
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAllPaged(Long categoryId, String name, PageRequest pageRequest) {
-		List<Category> categories = (categoryId == 0) ? null : Arrays.asList(categoryRepository.getOne(categoryId));
-		Page<Product> list = repository.findCustom(categories, name, pageRequest);
-		return list.map(product -> new ProductDTO(product));
+		List<Category> categories = (categoryId == 0L) ? null : Arrays.asList(categoryRepository.getOne(categoryId));
+		Page<Product> page = repository.findCustom(categories, name, pageRequest);
+		repository.findProductWithCategories(page.getContent());
+		return page.map(product -> new ProductDTO(product, product.getCategories()));
 	}
 
 	@Transactional(readOnly = true)
@@ -72,9 +73,9 @@ public class ProductService {
 		entity.setDate(dto.getDate());
 		entity.setImgUrl(dto.getImgUrl());
 		entity.setPrice(dto.getPrice());
-		
+
 		entity.getCategories().clear();
-		for (CategoryDTO catDto :  dto.getCategories()) {
+		for (CategoryDTO catDto : dto.getCategories()) {
 			Category category = categoryRepository.getOne(catDto.getId());
 			entity.getCategories().add(category);
 		}
