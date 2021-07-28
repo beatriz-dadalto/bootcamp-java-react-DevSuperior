@@ -63,6 +63,15 @@ public class ProductRepositoryTests {
 	}
 	
 	@Test
+	public void findShoulReturnNothingWhenNameDoesNotExist() {
+		String name = "Camera";
+		
+		Page<Product> result = repository.findCustom(null, name, pageRequest);
+		
+		Assertions.assertTrue(result.isEmpty());
+	}
+	
+	@Test
 	public void findShoulReturnAllProductsWhenNameIsEmpty() {
 		String name = "";
 		
@@ -73,8 +82,18 @@ public class ProductRepositoryTests {
 	}
 	
 	@Test
+	public void findShouldReturnProductWhenNameExistsIgnoringCase() {
+		String name = "pc GaMeR";
+		
+		Page<Product> result = repository.findCustom(null, name, pageRequest);
+		
+		Assertions.assertFalse(result.isEmpty());
+		Assertions.assertEquals(countPCGamerProducts, result.getTotalElements());
+	}
+	
+	@Test
 	public void findShoulReturnProductWhenNameExists() {
-		String name = "Pc gAmer";
+		String name = "PC Gamer";
 		
 		Page<Product> result = repository.findCustom(null, name, pageRequest);
 		
